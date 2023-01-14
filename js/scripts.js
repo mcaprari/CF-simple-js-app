@@ -9,3 +9,13 @@ let pokemonList = [
     {name: "Blastoise", height: 1.6, type: 'water'},
 ];
 
+for (let i=0; i < pokemonList.length;i++) { 
+    if (pokemonList[i].height >= 1.1){
+        console.log(pokemonList[i].name + " (height: " + pokemonList[i].height + ") - Wow, that's big!" + "<br>");
+        document.write(pokemonList[i].name + " (height: " + pokemonList[i].height + ")" + "<br>");
+    
+    } else {
+        console.log(pokemonList[i].name + " (height: " + pokemonList[i].height + ")");
+        document.write(pokemonList[i].name + " (height: " + pokemonList[i].height + ")" + "<br>")
+    }
+}
