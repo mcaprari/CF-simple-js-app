@@ -22,6 +22,7 @@ return {
   add: add,
   getAll: getAll,
   addListItem: addListItem,
+  showDetails: showDetaile
 };
 })();
 
@@ -38,6 +39,10 @@ function addListItem(pokemon) {
   let buttonSelect= pokemonListFolder.lastElementChild.querySelector('button');
   buttonSelect.classList.add(pokemon.typeClass);
 } 
+
+function showDetails(pokemon) {
+  console.log('Name: '+ pokemon.name+ ', '+ 'Height: '+ pokemon.height+ 'cm, '+ 'Types: '+ pokemon.types+ '.');
+}
 
 
 
