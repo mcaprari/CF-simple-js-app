@@ -20,9 +20,30 @@ function getAll() {
 
 return {
   add: add,
-  getAll: getAll
+  getAll: getAll,
+  addListItem: addListItem,
 };
 })();
+
+// add list item
+
+function addListItem(pokemon) {
+  let pokemonListFolder= document.querySelector('.pokemon-list')
+  let createListItem= document.createElement('li');
+  let button= document.createElement('button');
+  button.innerText= pokemon.name;
+  document.querySelector('.pokemon-list');
+  pokemonListFolder.appendChild(createListItem);
+  pokemonListFolder.lastElementChild.appendChild(button);
+  let buttonSelect= pokemonListFolder.lastElementChild.querySelector('button');
+  buttonSelect.classList.add(pokemon.typeClass);
+} 
+
+
+
+
+
+
 
 /* Before the forEach loop
 for (let i = 0; i < pokemonList.length; i++) {        
@@ -50,4 +71,7 @@ pokemonList.forEach(function(pokemon) {
 pokemonRepository.getAll().forEach(function(pokemon) {
   document.write(pokemon.name +  pokemon.height);
 });
+
+pokemonRepository.addListItem(pokemon);
+
 
