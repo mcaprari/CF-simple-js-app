@@ -2,19 +2,18 @@ let pokemonRepository = (function () {
   let pokemonList = [];
   let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150'; 
 
-
   function add(pokemon) {
-    if(
-        typeof pokemon=== 'object' &
-        typeof pokemon.name=== 'string' &
-        typeof pokemon.height=== 'number' &
-        Array.isArray(pokemon.types)
+    if (
+      typeof pokemon === "object" &&
+      "name" in pokemon
+      // 'height' in pokemon &&
+      // 'type' in pokemon
     ) {
-        pokemonList.push(pokemon)
+      pokemonList.push(pokemon);
     } else {
-        console.log(`Not valid!`)
+      document.write("Not a pokemon.");
     }
-}
+  }
 
   function getAll() {
     return pokemonList;
@@ -25,24 +24,34 @@ let pokemonRepository = (function () {
     // organizes funtions and selectors
     let pokemonListFolder= document.querySelector('.pokemon-list')
     let createListItem= document.createElement('li');
-    let button= document.createElement('button');
+    let pokeButton= document.createElement('button');
     // creates button for each pokemon added
-    button.innerText= pokemon.name;
-    document.querySelector('.pokemon-list');
-    pokemonListFolder.appendChild(createListItem);
-    pokemonListFolder.lastElementChild.appendChild(button);
-    let buttonSelect= pokemonListFolder.lastElementChild.querySelector('button');
-    buttonSelect.classList.add(pokemon.typeClass);
-    //creates an even listener to every button
-    buttonSelect.addEventListener('click', function () {
+    pokeButton.innerText= pokemon.name;
+    pokeButton.classList.add("button-class");
+    listItem.appendChild(pokeButton);
+    pokemonList.appendChild(listItem);
+
+    pokeButton.addEventListener("click", function (event) {
       showDetails(pokemon);
-  });
+    });
   }
+  //   document.querySelector('.pokemon-list');
+  //   pokemonListFolder.appendChild(createListItem);
+  //   pokemonListFolder.lastElementChild.appendChild(pokeButton);
+  //   let buttonSelect= pokemonListFolder.lastElementChild.querySelector('button');
+  //   buttonSelect.classList.add(pokemon.typeClass);
+  //   //creates an even listener to every button
+  //   buttonSelect.addEventListener('click', function () {
+  //     showDetails(pokemon);
+  // });
+  // }
 
   function loadList() {
-    return fetch(apiUrl).then(function (response) {
+    return fetch(apiUrl).then
+    (function (response) {
       return response.json();
-    }).then(function (json) {
+    })
+    .then(function (json) {
       json.results.forEach(function (item) {
         let pokemon = {
           name: item.name,
@@ -50,30 +59,53 @@ let pokemonRepository = (function () {
         };
         add(pokemon);
       });
-    }).catch(function (e) {
+    })
+    .catch(function (e) {
       console.error(e);
     })
   }
 
+  function loadDetails(item) {
+    let url = item.detailsUrl;
+    return fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (details) {
+        // Now we add the details to the item
+        item.imageUrl = details.sprites.front_default;
+        item.height = details.height;
+        item.types = details.types;
+      })
+      .catch(function (e) {
+        console.error(e);
+      });
+  }
+
   return {
-    add: add,
     getAll: getAll,
+    add: add,
     addListItem: addListItem,
-    showDetails: showDetails
+    loadList: loadList,
+    loadDetails: loadDetails,
+    showDetails: showDetails,
   };
   })();
 
-  pokemonRepository.loadList().then(function() {
+  pokemonRepository.loadList().then(function () {
     // Now the data is loaded!
-    pokemonRepository.getAll().forEach(function(pokemon){
+    pokemonRepository.getAll().forEach(function (pokemon) {
       pokemonRepository.addListItem(pokemon);
     });
   });
   
   function showDetails(pokemon) {
-    console.log('Name: '+ pokemon.name+ ', '+ 'Height: '+ pokemon.height+ 'cm, '+ 'Types: '+ pokemon.types+ '.');
+    pokemonRepository.loadDetails(pokemon).then(function () {
+      console.log(pokemon);
+    });
   }
 
+  
   /* //adds pokemon to pokemonlist
   pokemonRepository.add({name: 'Charmander', height: .6, types: [' fire', ' flying'], typeClass: 'pokemontype__fireFlying'});
   pokemonRepository.add({name: 'Chareleon', height: 1.1, types: ['fire', 'flying'], typeClass: 'pokemontype__fireFlying'});
