@@ -35,17 +35,7 @@ let pokemonRepository = (function () {
       showDetails(pokemon);
     });
   }
-  //   document.querySelector('.pokemon-list');
-  //   pokemonListFolder.appendChild(createListItem);
-  //   pokemonListFolder.lastElementChild.appendChild(pokeButton);
-  //   let buttonSelect= pokemonListFolder.lastElementChild.querySelector('button');
-  //   buttonSelect.classList.add(pokemon.typeClass);
-  //   //creates an even listener to every button
-  //   buttonSelect.addEventListener('click', function () {
-  //     showDetails(pokemon);
-  // });
-  // }
-
+ 
   function loadList() {
     return fetch(apiUrl).then
     (function (response) {
@@ -82,6 +72,60 @@ let pokemonRepository = (function () {
       });
   }
 
+  function showModal(title, img, text) {
+    let modalContainer = document.querySelector('#modal-container');
+
+    // Clear all existing modal content
+    modalContainer.innerHTML = '';
+
+    let modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    // Add the new modal content
+    let closeButtonElement = document.createElement('button');
+    closeButtonElement.classList.add('modal-close');
+    closeButtonElement.innerText = 'Close';
+    closeButtonElement.addEventListener('click', hideModal);
+
+    let titleElement = document.createElement('h1');
+    titleElement.innerText = title;
+
+    let myImage = document.createElement('img');
+      myImage.innerText = img
+
+    let contentElement = document.createElement('p');
+    contentElement.innerText = text;
+
+
+
+    modal.appendChild(closeButtonElement);
+    modal.appendChild(titleElement);
+    modal.appendChild(myImage);
+    modal.appendChild(contentElement);
+    modalContainer.appendChild(modal);
+
+
+
+    modalContainer.classList.add('is-visible');
+    modalContainer.addEventListener('click', (e) => {
+      let target = e.target;
+      if (target === modalContainer) {
+        hideModal();
+      }
+    });
+  }
+  function hideModal() {
+    let modalContainer = document.querySelector('#modal-container');
+    modalContainer.classList.remove('is-visible');
+  }
+
+  window.addEventListener('keydown', (e) => {
+    let modalContainer = document.querySelector('#modal-container');
+    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+      hideModal();  
+    }
+  });
+
   return {
     getAll: getAll,
     add: add,
@@ -101,25 +145,21 @@ let pokemonRepository = (function () {
   
   function showDetails(pokemon) {
     pokemonRepository.loadDetails(pokemon).then(function () {
-      console.log(pokemon);
+      showModal(pokemon.name, pokemon.imageUrl, 'Height: ' + pokemon.height);
     });
   }
 
   
-  /* //adds pokemon to pokemonlist
-  pokemonRepository.add({name: 'Charmander', height: .6, types: [' fire', ' flying'], typeClass: 'pokemontype__fireFlying'});
-  pokemonRepository.add({name: 'Chareleon', height: 1.1, types: ['fire', 'flying'], typeClass: 'pokemontype__fireFlying'});
-  pokemonRepository.add({name: 'Charizard', height: 1.7, types: ['fire', ' flying'], typeClass: 'pokemontype__fireFlying'});
-  pokemonRepository.add({name: 'Pikachu', height: .4, types: [' eletric'], typeClass: 'pokemontype__electric'});
-  pokemonRepository.add({name: 'Raichu', height: .8, types: ['electric'], typeClass: 'pokemontype__electric'});
-  pokemonRepository.add({name: 'Squirtle', height: .5, types: ['water'], typeClass: 'pokemontype__water'});
-  pokemonRepository.add({name: 'Bulbasaur', height: 1, types: [' water'], typeClass: 'pokemontype__water'});
-  pokemonRepository.add({name: 'Charmander', height: 1.6, types: ['water'], typeClass: 'pokemontype__water'});
-
-  // loop to creat button for each pokemon
-  pokemonRepository.getAll().forEach(function(pokemon) {
-    pokemonRepository.addListItem(pokemon);
-  }); */
+   //   document.querySelector('.pokemon-list');
+  //   pokemonListFolder.appendChild(createListItem);
+  //   pokemonListFolder.lastElementChild.appendChild(pokeButton);
+  //   let buttonSelect= pokemonListFolder.lastElementChild.querySelector('button');
+  //   buttonSelect.classList.add(pokemon.typeClass);
+  //   //creates an even listener to every button
+  //   buttonSelect.addEventListener('click', function () {
+  //     showDetails(pokemon);
+  // });
+  // }
 
 
 
