@@ -28,8 +28,8 @@ let pokemonRepository = (function () {
     // creates button for each pokemon added
     pokeButton.innerText= pokemon.name;
     pokeButton.classList.add("button-class");
-    listItem.appendChild(pokeButton);
-    pokemonList.appendChild(listItem);
+    createListItem.appendChild(pokeButton);
+    pokemonListFolder.appendChild(createListItem);
 
     pokeButton.addEventListener("click", function (event) {
       showDetails(pokemon);
@@ -133,6 +133,7 @@ let pokemonRepository = (function () {
     loadList: loadList,
     loadDetails: loadDetails,
     showDetails: showDetails,
+    showModal: showModal,
   };
   })();
 
@@ -145,7 +146,7 @@ let pokemonRepository = (function () {
   
   function showDetails(pokemon) {
     pokemonRepository.loadDetails(pokemon).then(function () {
-      showModal(pokemon.name, pokemon.imageUrl, 'Height: ' + pokemon.height);
+      pokemonRepository.showModal(pokemon.name, pokemon.imageUrl, 'Height: ' + pokemon.height);
     });
   }
 
