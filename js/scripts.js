@@ -91,8 +91,7 @@ let pokemonRepository = (function () {
     titleElement.innerText = title;
 
     let myImage = document.createElement('img');
-      myImage.innerText = img
-
+      myImage.src = img
     let contentElement = document.createElement('p');
     contentElement.innerText = text;
 
